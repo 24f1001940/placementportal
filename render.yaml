@@ -41,14 +41,15 @@ services:
       - key: UPLOAD_DIR
         value: /app/uploads/resumes
 
-  - type: static
+  - type: web
     name: placementportal-frontend
+    env: docker
     rootDir: frontend
-    buildCommand: npm ci && npm run build
-    publishPath: dist
+    plan: starter
+    dockerfilePath: Dockerfile
     envVars:
       - key: VITE_API_URL
-        value: https://placementportal-backend.onrender.com/api
+        sync: false
 
 databases:
   - name: placementportal-db
