@@ -77,6 +77,8 @@ The blueprint uses these default Render URLs:
 - `VITE_API_URL=https://placementportal-backend.onrender.com/api`
 - `FRONTEND_ORIGIN=https://placementportal-frontend.onrender.com`
 
+This configuration uses paid Render resources for production persistence: the backend has a persistent disk for resumes and the database uses the current `basic-256mb` Postgres plan.
+
 If Render appends a suffix to the service names or you use custom domains, update those two values in `render.yaml` and sync the Blueprint again.
 
 The backend health check is available at `/api/health`. Uploaded resumes are written under `/app/uploads/resumes`, which is inside the persistent disk mounted at `/app/uploads`.
