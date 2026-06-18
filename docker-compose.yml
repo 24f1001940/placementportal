@@ -1,0 +1,76 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: placement-mysql
+    environment:
+      MYSQL_DATABASE: placement_portal
+      MYSQL_USER: placement
+      MYSQL_PASSWORD: placement
+      MYSQL_ROOT_PASSWORD: placement_root
+    ports:
+      - "3307:3307"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pplacement_root"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    container_name: placement-redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: placement-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: placement
+      RABBITMQ_DEFAULT_PASS: placement
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: placement-backend
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/placement_portal?allowPublicKeyRetrieval=true&useSSL=false
+      DB_USERNAME: placement
+      DB_PASSWORD: placement
+      REDIS_HOST: redis
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USERNAME: placement
+      RABBITMQ_PASSWORD: placement
+      JWT_SECRET: local-docker-secret-change-me-at-least-32-chars
+      FRONTEND_ORIGIN: http://localhost:5173
+      UPLOAD_DIR: /app/uploads/resumes
+    ports:
+      - "8081:8080"
+    volumes:
+      - resume-uploads:/app/uploads/resumes
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8081/api
+    container_name: placement-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql-data:
+  resume-uploads:

@@ -1,0 +1,22 @@
+services:
+  mysql:
+    image: 'mysql:8.4'
+    environment:
+      - 'MYSQL_DATABASE=placement_portal'
+      - 'MYSQL_PASSWORD=placement'
+      - 'MYSQL_ROOT_PASSWORD=placement_root'
+      - 'MYSQL_USER=placement'
+    ports:
+      - '3307:3306'
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    environment:
+      - 'RABBITMQ_DEFAULT_PASS=placement'
+      - 'RABBITMQ_DEFAULT_USER=placement'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+  redis:
+    image: 'redis:7'
+    ports:
+      - '6379:6379'
