@@ -3,7 +3,7 @@ services:
     name: placementportal-backend
     env: docker
     rootDir: backend
-    plan: starter
+    plan: free
     dockerfilePath: Dockerfile
     envVars:
       - key: DB_URL
@@ -45,7 +45,7 @@ services:
     name: placementportal-frontend
     env: docker
     rootDir: frontend
-    plan: starter
+    plan: free
     dockerfilePath: Dockerfile
     envVars:
       - key: VITE_API_URL
@@ -53,4 +53,4 @@ services:
 
 databases:
   - name: placementportal-db
-    plan: starter
+    plan: free
