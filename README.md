@@ -63,6 +63,8 @@ Then open http://localhost:5173.
 
 ## Render Deployment
 
+For the recommended split deployment on Railway + Vercel, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
 This repository includes a Render blueprint in [render.yaml](render.yaml) for a full-stack deployment:
 
 - Backend: Docker web service using the Spring Boot API
