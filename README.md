@@ -68,15 +68,18 @@ This repository includes a Render blueprint in [render.yaml](render.yaml) for a 
 - Backend: Docker web service using the Spring Boot API
 - Frontend: static site built from the Vite app
 - Database: managed PostgreSQL for the backend
+- Disk: persistent backend storage for uploaded resumes
 
-After creating the Render services, set the frontend API base URL to the backend service URL and redeploy the frontend if needed. The backend already accepts Render and Vercel frontend origins.
+Deploy from the Render Dashboard with **New > Blueprint**, connect this GitHub repository, choose the `main` branch, and keep the blueprint path as `render.yaml`. Render will create the backend, frontend, and database from the file.
 
-Suggested environment values:
+The blueprint uses these default Render URLs:
 
 - `VITE_API_URL=https://placementportal-backend.onrender.com/api`
 - `FRONTEND_ORIGIN=https://placementportal-frontend.onrender.com`
 
-If you use a different service name, update the URLs to match the generated Render domains.
+If Render appends a suffix to the service names or you use custom domains, update those two values in `render.yaml` and sync the Blueprint again.
+
+The backend health check is available at `/api/health`. Uploaded resumes are written under `/app/uploads/resumes`, which is inside the persistent disk mounted at `/app/uploads`.
 
 ## Verification
 
