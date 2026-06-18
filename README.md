@@ -61,6 +61,23 @@ docker compose up --build
 
 Then open http://localhost:5173.
 
+## Render Deployment
+
+This repository includes a Render blueprint in [render.yaml](render.yaml) for a full-stack deployment:
+
+- Backend: Docker web service using the Spring Boot API
+- Frontend: static site built from the Vite app
+- Database: managed PostgreSQL for the backend
+
+After creating the Render services, set the frontend API base URL to the backend service URL and redeploy the frontend if needed. The backend already accepts Render and Vercel frontend origins.
+
+Suggested environment values:
+
+- `VITE_API_URL=https://placementportal-backend.onrender.com/api`
+- `FRONTEND_ORIGIN=https://placementportal-frontend.onrender.com`
+
+If you use a different service name, update the URLs to match the generated Render domains.
+
 ## Verification
 
 ```powershell
